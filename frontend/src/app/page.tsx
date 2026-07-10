@@ -34,18 +34,28 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-100">
-      <div className="max-w-7xl mx-auto px-6 py-10">
+    <main className="min-h-screen bg-gradient-to-br from-slate-100 via-blue-50 to-white">
+      <div className="max-w-6xl mx-auto px-6 py-12">
         {/* Header */}
-        <div className="text-center mb-10">
-          <h1 className="text-5xl font-bold text-slate-900">
-            GrowEasy AI CSV Importer
-          </h1>
+        <div className="text-center mb-12">
 
-          <p className="mt-3 text-lg text-slate-600">
-            Import CRM Leads from Any CSV using AI
-          </p>
-        </div>
+  <div className="inline-flex items-center rounded-full bg-blue-100 px-4 py-2 text-sm font-medium text-blue-700 mb-5">
+    🚀 AI Powered CRM Importer
+  </div>
+
+  <h1 className="text-6xl font-extrabold text-slate-900">
+    GrowEasy
+    <span className="text-blue-600"> AI</span>
+  </h1>
+
+  <p className="mt-5 text-xl text-slate-600 max-w-3xl mx-auto">
+    Upload any CSV from Facebook Leads, Google Ads,
+    Excel, Real Estate CRMs or Marketing Platforms.
+    Our AI automatically maps your data into the
+    GrowEasy CRM format.
+  </p>
+
+</div>
 
         {/* Upload Area */}
         <UploadZone
