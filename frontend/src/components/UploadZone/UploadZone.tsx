@@ -7,7 +7,7 @@ import { parseCsv } from "../../services/csv.service";
 import { CsvPreview } from "../../types/csv";
 
 type Props = {
-  onParsed: (data: CsvPreview) => void;
+  onParsed: (preview: CsvPreview, file: File) => void;
 };
 
 export default function UploadZone({ onParsed }: Props) {
@@ -17,7 +17,7 @@ export default function UploadZone({ onParsed }: Props) {
 
       try {
         const parsed = await parseCsv(acceptedFiles[0]);
-        onParsed(parsed);
+        onParsed(parsed, acceptedFiles[0]);
       } catch (err) {
         console.error(err);
         alert("Failed to parse CSV.");
