@@ -1,12 +1,17 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState } from "react";
 import UploadZone from "../components/UploadZone/UploadZone";
 import PreviewTable from "../components/PreviewTable/PreviewTable";
 import { CsvPreview } from "../types/csv";
+import ImportButton from "../components/ImportButton/ImportButton";
 
 export default function Home() {
   const [preview, setPreview] = useState<CsvPreview | null>(null);
+  const handleImport = () => {
+  alert("Next step: This will send the CSV to the backend.");
+};
 
   return (
     <main className="min-h-screen bg-slate-100">
@@ -28,11 +33,11 @@ export default function Home() {
 
         {/* Preview */}
         {preview && (
-          <PreviewTable
-            headers={preview.headers}
-            rows={preview.rows}
-          />
-        )}
+  <ImportButton
+    disabled={!preview}
+    onImport={handleImport}
+  />
+)}
       </div>
     </main>
   );
