@@ -25,7 +25,7 @@ export default function Home() {
 
       console.log(result);
 
-      alert("Backend responded successfully!");
+      alert(`Parsed ${result.totalRows} rows successfully!`);
     } catch (error) {
       console.error(error);
 
