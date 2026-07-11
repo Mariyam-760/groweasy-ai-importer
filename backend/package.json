@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
-    "test:gemini": "tsx src/testGemini.ts",
-    "list-models": "tsx src/listModels.ts",
-    "test-api": "tsx src/testApi.ts"
-  },
+  "dev": "tsx watch src/server.ts",
+  "start": "tsx src/server.ts",
+  "test:gemini": "tsx src/testGemini.ts",
+  "list-models": "tsx src/listModels.ts",
+  "test-api": "tsx src/testApi.ts"
+},
   "dependencies": {
     "@google/genai": "^2.11.0",
     "axios": "^1.18.1",
