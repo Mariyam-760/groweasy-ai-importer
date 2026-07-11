@@ -20,43 +20,71 @@ export default function Home() {
   const [preview, setPreview] = useState<CsvPreview | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
- const [importResult, setImportResult] =
-  useState<ImportResult | null>(null);
+  const [importResult, setImportResult] =
+    useState<ImportResult | null>(null);
 
-const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [activeTab, setActiveTab] = useState<
     "preview" | "mapping" | "crm" | "summary"
   >("preview");
 
   const handleImport = async () => {
-  if (!selectedFile) {
-    alert("No file selected!");
-    return;
-  }
+    if (!selectedFile) {
+      setErrorMessage("Please select a CSV file.");
+      return;
+    }
 
-  setLoading(true);
+    setLoading(true);
+    setErrorMessage("");
 
-  try {
-    const result = await importCsv(selectedFile);
+    try {
+      const result = await importCsv(selectedFile);
 
-    setImportResult(result);
+      setImportResult(result);
 
-    setActiveTab("mapping");
-  } catch (error) {
-    console.error(error);
+      // Automatically open Mapping tab
+      setActiveTab("mapping");
+    } catch (error: unknown) {
+      console.error(error);
 
-    alert("Backend request failed!");
-  } finally {
-    setLoading(false);
-  }
-};
+      type ImportError = {
+        response?: {
+          data?: {
+            message?: string;
+          };
+        };
+        request?: unknown;
+      };
+
+      const importError = error as ImportError;
+
+      if (importError.response) {
+        setErrorMessage(
+          importError.response.data?.message ??
+            "Server failed while processing CSV."
+        );
+      } else if (importError.request) {
+        setErrorMessage(
+          "Unable to reach backend server."
+        );
+      } else {
+        setErrorMessage(
+          "Unexpected error occurred."
+        );
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-100 via-blue-50 to-white">
       <div className="max-w-6xl mx-auto px-6 py-12">
 
-        {/* ---------------- Header ---------------- */}
+        {/* Header */}
 
         <div className="text-center mb-12">
 
@@ -70,47 +98,39 @@ const [loading, setLoading] = useState(false);
           </h1>
 
           <p className="mt-5 text-xl text-slate-600 max-w-3xl mx-auto">
-            Upload any CSV from Facebook Leads, Google Ads,
-            Excel, Real Estate CRMs or Marketing Platforms.
-            Our AI automatically maps your data into the
-            GrowEasy CRM format.
+            Upload any CSV from Facebook Leads,
+            Google Ads, Excel, Real Estate CRMs
+            or Marketing Platforms.
+
+            Our AI automatically maps your data
+            into the GrowEasy CRM format.
           </p>
 
         </div>
 
-        {/* ---------------- Upload ---------------- */}
+        {/* Upload */}
 
         <UploadZone
           onParsed={(preview, file) => {
             setPreview(preview);
             setSelectedFile(file);
 
-            // Reset previous import
             setImportResult(null);
+            setErrorMessage("");
 
-            // Return to Preview tab
             setActiveTab("preview");
           }}
         />
 
-        {/* ---------------- File Summary ---------------- */}
-
         {preview && (
           <>
-            {/* <FileSummary
-              fileName={selectedFile?.name ?? ""}
-              totalRows={preview.rows.length}
-              totalColumns={preview.headers.length}
-            /> */}
-
-            {/* ---------------- Tabs ---------------- */}
 
             <Tabs
               activeTab={activeTab}
               onChange={setActiveTab}
             />
 
-            {/* ---------------- Preview ---------------- */}
+            {/* Preview */}
 
             {activeTab === "preview" && (
               <PreviewTable
@@ -119,49 +139,68 @@ const [loading, setLoading] = useState(false);
               />
             )}
 
-            {/* ---------------- AI Mapping ---------------- */}
+            {/* Mapping */}
 
-            {activeTab === "mapping" && importResult && (
-              <MappingTable
-                mapping={importResult.mapping}
-              />
+            {activeTab === "mapping" &&
+              importResult && (
+                <MappingTable
+                  mapping={importResult.mapping}
+                />
+              )}
+
+            {/* CRM */}
+
+            {activeTab === "crm" &&
+              importResult && (
+                <CRMPreview
+                  rows={importResult.crmRows}
+                />
+              )}
+
+            {/* Summary */}
+
+            {activeTab === "summary" &&
+              importResult && (
+                <ImportSummary
+                  totalRows={importResult.totalRows}
+                  totalImported={
+                    importResult.totalImported
+                  }
+                  totalSkipped={
+                    importResult.totalSkipped
+                  }
+                />
+              )}
+
+            {/* Error */}
+
+            {errorMessage && (
+              <div className="mt-8 rounded-xl border border-red-300 bg-red-50 p-4 text-red-700">
+                ❌ {errorMessage}
+              </div>
             )}
 
-            {/* ---------------- CRM Preview ---------------- */}
-
-            {activeTab === "crm" && importResult && (
-              <CRMPreview
-                rows={importResult.crmRows}
-              />
-            )}
-
-            {/* ---------------- Summary ---------------- */}
-
-            {activeTab === "summary" && importResult && (
-              <ImportSummary
-                totalRows={importResult.totalRows}
-                totalImported={importResult.totalImported}
-                totalSkipped={importResult.totalSkipped}
-              />
-            )}
-
-            {/* ---------------- Button ---------------- */}
+            {/* Button */}
 
             <div className="mt-8">
+
               <ImportButton
-  disabled={!preview || loading}
-  onImport={handleImport}
-/>
+                disabled={!preview || loading}
+                onImport={handleImport}
+              />
 
-{loading && (
-  <div className="mt-6 flex items-center justify-center gap-3 rounded-xl bg-blue-50 p-5">
-    <div className="h-6 w-6 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
+              {loading && (
+                <div className="mt-6 flex items-center justify-center gap-3 rounded-xl bg-blue-50 p-5">
 
-    <span className="text-lg font-semibold text-blue-700">
-      AI is analyzing your CSV...
-    </span>
-  </div>
-)}
+                  <div className="h-6 w-6 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
+
+                  <span className="text-lg font-semibold text-blue-700">
+                    AI is analyzing your CSV...
+                  </span>
+
+                </div>
+              )}
+
             </div>
 
           </>
