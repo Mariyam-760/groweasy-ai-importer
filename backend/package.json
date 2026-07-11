@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/server.ts",
+    "test:gemini": "tsx src/testGemini.ts",
+    "list-models": "tsx src/listModels.ts",
+    "test-api": "tsx src/testApi.ts"
   },
   "dependencies": {
     "@google/genai": "^2.11.0",
+    "axios": "^1.18.1",
     "cors": "^2.8.5",
     "csv-parser": "^3.2.0",
     "dotenv": "^17.2.1",
@@ -19,7 +23,8 @@
     "@types/express": "^5.0.3",
     "@types/multer": "^2.2.0",
     "@types/node": "^24.3.0",
-    "tsx": "^4.20.5",
+    "ts-node-dev": "^2.0.0",
+    "tsx": "^4.23.0",
     "typescript": "^5.9.2"
   }
 }

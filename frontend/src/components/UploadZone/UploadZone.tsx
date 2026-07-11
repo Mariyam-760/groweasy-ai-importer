@@ -35,48 +35,57 @@ export default function UploadZone({ onParsed }: Props) {
   });
 
   return (
-    <div
-      {...getRootProps()}
-      className={`
-        bg-white
-        rounded-2xl
-        shadow-lg
-        border-2
-        border-dashed
-        p-12
-        text-center
-        cursor-pointer
-        transition-all
-        ${
-          isDragActive
-            ? "border-blue-500 bg-blue-50"
-            : "border-slate-300 hover:border-blue-500"
-        }
-      `}
-    >
-      <input {...getInputProps()} />
+  <div
+    {...getRootProps()}
+    className={`
+      bg-white
+      rounded-3xl
+      border-2
+      border-dashed
+      shadow-xl
+      p-12
+      cursor-pointer
+      transition-all
+      duration-300
+      ${
+        isDragActive
+          ? "border-blue-500 bg-blue-50 scale-[1.02]"
+          : "border-slate-300 hover:border-blue-500 hover:shadow-2xl"
+      }
+    `}
+  >
+    <input {...getInputProps()} />
 
-      <UploadCloud
-        size={70}
-        className="mx-auto text-blue-600 mb-5"
-      />
+    <div className="flex flex-col items-center">
+
+      <div className="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center mb-6">
+        <UploadCloud
+          size={48}
+          className="text-blue-600"
+        />
+      </div>
 
       <h2 className="text-3xl font-bold text-slate-800">
-        Upload CSV
+        Upload your CSV
       </h2>
 
-      <p className="text-slate-500 mt-3">
-        Drag & Drop your CSV here
+      <p className="mt-3 text-slate-500 text-center max-w-xl">
+        Drag & Drop your CSV file here or click below to browse.
       </p>
-
-      <p className="my-5 text-slate-400">OR</p>
 
       <button
         type="button"
-        className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold"
+        className="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-xl transition"
       >
-        Choose File
+        Browse CSV
       </button>
+
+      <div className="mt-8 text-center">
+        <p className="text-sm text-slate-500">
+          Supports any valid CSV format with AI-powered field mapping.
+        </p>
+      </div>
     </div>
+  </div>
   );
 }

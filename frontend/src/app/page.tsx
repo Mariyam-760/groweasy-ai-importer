@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 "use client";
 
 import { useState } from "react";
@@ -7,6 +7,7 @@ import PreviewTable from "../components/PreviewTable/PreviewTable";
 import { CsvPreview } from "../types/csv";
 import ImportButton from "../components/ImportButton/ImportButton";
 import { importCsv } from "../services/import.service";
+import FileSummary from "../components/FileSummary/FileSummary";
 
 export default function Home() {
   const [preview, setPreview] = useState<CsvPreview | null>(null);
@@ -68,6 +69,12 @@ export default function Home() {
         {/* Preview */}
         {preview && (
   <>
+    <FileSummary
+      fileName={selectedFile?.name ?? ""}
+      totalRows={preview.rows.length}
+      totalColumns={preview.headers.length}
+    />
+
     <PreviewTable
       headers={preview.headers}
       rows={preview.rows}
