@@ -7,11 +7,12 @@ type Props = {
 
 export default function Tabs({ activeTab, onChange }: Props) {
   const tabs = [
-    { id: "preview", label: "📄 Preview" },
-    { id: "mapping", label: "🤖 AI Mapping" },
-    { id: "crm", label: "🏢 CRM Preview" },
-    // { id: "summary", label: "📊 Summary" },
-  ] as const;
+  { id: "preview", label: "📄 Preview" },
+  { id: "mapping", label: "🤖 AI Mapping" },
+  { id: "crm", label: "🏢 CRM Preview" },
+  { id: "summary", label: "📊 Summary" },
+] as const;
+ 
 
   return (
     <div className="mt-8 mb-8 flex flex-wrap gap-3 rounded-2xl bg-white p-3 shadow-lg">

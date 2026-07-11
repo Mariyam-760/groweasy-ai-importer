@@ -9,6 +9,7 @@ import ImportButton from "../components/ImportButton/ImportButton";
 import MappingTable from "../components/MappingTable/MappingTable";
 import CRMPreview from "../components/CRMPreview/CRMPreview";
 import Tabs from "../components/Tabs/Tabs";
+import ImportSummary from "../components/ImportSummary/ImportSummary";
 
 import { CsvPreview } from "../types/csv";
 import { ImportResult } from "../types/import";
@@ -128,19 +129,15 @@ export default function Home() {
               />
             )}
 
-            ---------------- Summary ----------------
+            {/* ---------------- Summary ---------------- */}
 
-            {/* {activeTab === "summary" && (
-              <div className="mt-8 rounded-2xl bg-white p-10 shadow-xl text-center">
-                <h2 className="text-3xl font-bold text-slate-900">
-                  📊 Import Summary
-                </h2>
-
-                <p className="mt-4 text-slate-600">
-                  Summary dashboard will be added next.
-                </p>
-              </div>
-            )} */}
+            {activeTab === "summary" && importResult && (
+              <ImportSummary
+                totalRows={importResult.totalRows}
+                totalImported={importResult.totalImported}
+                totalSkipped={importResult.totalSkipped}
+              />
+            )}
 
             {/* ---------------- Button ---------------- */}
 

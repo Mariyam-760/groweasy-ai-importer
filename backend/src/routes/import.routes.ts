@@ -50,19 +50,22 @@ router.post("/", upload.single("file"), async (req, res) => {
 
     // Convert rows
     console.log("Converting rows...");
+const result = mapRowsToCRM(rows, mapping);
 
-    const crmRows = mapRowsToCRM(rows, mapping);
+console.log("Rows imported:", result.totalImported);
+console.log("Rows skipped:", result.totalSkipped);
 
-    console.log("Rows converted:", crmRows.length);
+console.log("========== IMPORT SUCCESS ==========");
 
-    console.log("========== IMPORT SUCCESS ==========");
-
-    return res.json({
-      success: true,
-      totalRows: rows.length,
-      mapping,
-      crmRows,
-    });
+return res.json({
+  success: true,
+  totalRows: rows.length,
+  totalImported: result.totalImported,
+  totalSkipped: result.totalSkipped,
+  mapping,
+  crmRows: result.crmRows,
+  skippedRows: result.skippedRows,
+});
   } catch (error) {
     console.log("========== IMPORT ERROR ==========");
 
