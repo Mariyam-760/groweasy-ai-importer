@@ -25,7 +25,7 @@ export default function ImportButton({
           }
         `}
       >
-        Confirm Import
+        {disabled ? "Processing..." : "Confirm Import"}
       </button>
     </div>
   );

@@ -20,31 +20,37 @@ export default function Home() {
   const [preview, setPreview] = useState<CsvPreview | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const [importResult, setImportResult] =
-    useState<ImportResult | null>(null);
+ const [importResult, setImportResult] =
+  useState<ImportResult | null>(null);
+
+const [loading, setLoading] = useState(false);
 
   const [activeTab, setActiveTab] = useState<
     "preview" | "mapping" | "crm" | "summary"
   >("preview");
 
   const handleImport = async () => {
-    if (!selectedFile) {
-      alert("No file selected!");
-      return;
-    }
+  if (!selectedFile) {
+    alert("No file selected!");
+    return;
+  }
 
-    try {
-      const result = await importCsv(selectedFile);
+  setLoading(true);
 
-      setImportResult(result);
+  try {
+    const result = await importCsv(selectedFile);
 
-      // Automatically switch to AI Mapping after import
-      setActiveTab("mapping");
-    } catch (error) {
-      console.error(error);
-      alert("Backend request failed!");
-    }
-  };
+    setImportResult(result);
+
+    setActiveTab("mapping");
+  } catch (error) {
+    console.error(error);
+
+    alert("Backend request failed!");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-100 via-blue-50 to-white">
@@ -143,9 +149,19 @@ export default function Home() {
 
             <div className="mt-8">
               <ImportButton
-                disabled={!preview}
-                onImport={handleImport}
-              />
+  disabled={!preview || loading}
+  onImport={handleImport}
+/>
+
+{loading && (
+  <div className="mt-6 flex items-center justify-center gap-3 rounded-xl bg-blue-50 p-5">
+    <div className="h-6 w-6 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
+
+    <span className="text-lg font-semibold text-blue-700">
+      AI is analyzing your CSV...
+    </span>
+  </div>
+)}
             </div>
 
           </>
