@@ -126,7 +126,7 @@ groweasy-ai-importer/
 ### Clone Repository
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/groweasy-ai-importer.git
+git clone https://github.com/Mariyam-760/groweasy-ai-importer.git
 ```
 
 ---
